@@ -5,6 +5,7 @@ import inc.tenk.cardealer.areas.users.entities.Role;
 
 
 public class UserDTO {
+    private Long id;
     private String firstName;
     private String lastName;
     private String username;
@@ -15,6 +16,14 @@ public class UserDTO {
     private Role role;
 
     public UserDTO() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

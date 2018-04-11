@@ -8,6 +8,8 @@ import inc.tenk.cardealer.areas.parts.repositories.PartRepository;
 import inc.tenk.cardealer.exceptions.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -32,7 +34,7 @@ public class PartServiceImpl implements PartService{
              return false;
         }
         part = new Part(partDTO.getDescription(), partDTO.getPrice(), partDTO.getQuantity());
-        this.partRepository.saveAndFlush(part);
+        this.partRepository.save(part);
         return true;
     }
 
@@ -43,7 +45,7 @@ public class PartServiceImpl implements PartService{
 
     @Override
     public boolean delete(Long id) {
-        if(this.partRepository.getOne(id)==null) {
+        if(this.partRepository.findOne(id)==null) {
             return false;
         }
         this.partRepository.delete(id);
@@ -52,7 +54,7 @@ public class PartServiceImpl implements PartService{
 
     @Override
     public boolean edit(Long id, PublishPartDTO partEditDTO) {
-        if(this.partRepository.getOne(id)==null) {
+        if(this.partRepository.findOne(id)==null) {
             throw new EntityNotFoundException();
         }
         this.partRepository.update(id,partEditDTO.getDescription(),partEditDTO.getPrice(),partEditDTO.getQuantity());
@@ -61,9 +63,16 @@ public class PartServiceImpl implements PartService{
 
     @Override
     public PublishPartDTO get(Long id) {
-        if(this.partRepository.getOne(id)==null) {
+        if(this.partRepository.findOne(id)==null) {
             return null;
         }
         return this.mapper.map(this.partRepository.findOne(id),PublishPartDTO.class);
+    }
+
+    @Override
+    public Page<PartDTO> listAllByPage(Pageable pageable) {
+        Page<Part> parts = this.partRepository.findAll(pageable);
+        Page<PartDTO> partDTOS = parts.map(part -> this.mapper.map(part, PartDTO.class));
+        return partDTOS;
     }
 }

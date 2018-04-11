@@ -3,26 +3,18 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/styles/navbar.css"/>
+    <link rel="stylesheet" href="/styles/app.css"/>
+    <link rel="stylesheet" href="/styles/footer.css"/>
     <title>Cars</title>
 </head>
 <body>
-<a th:href="@{/}">Index</a><br/>
-<a th:href="@{/cars/add}">Add Car</a>
-<table border="1" style="border: black">
-    <tr>
-        <th>Make</th>
-        <th>Model</th>
-        <th>Travelled Distance</th>
-        <th>Parts</th>
-    </tr>
-    <th:block th:each="car : ${cars}" th:object="${car}">
-        <tr>
-            <td><p th:text="*{make}"></p></td>
-            <td><p th:text="*{model}"></p></td>
-            <td><p th:text="*{year}"></p></td>
-            <td><a th:href="@{/cars/{id}/parts(id=*{id})}" th:text="Parts"></a></td>
-        </tr>
-    </th:block>
-</table>
+<div th:include="fragments/header :: header"></div>
+<div class="app-container">
+</div>
+
+<div th:include="fragments/footer :: footer"></div>
 </body>
 </html>

@@ -4,6 +4,7 @@ import inc.tenk.cardealer.areas.cars.entities.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public interface CarRepository extends JpaRepository<Car, Long>{
+public interface CarRepository extends PagingAndSortingRepository<Car, Long> {
     List<Car> findByMakeOrderByModelAscYearDesc(String make);
 
     @Query("select c from Car c where c.id=:id")

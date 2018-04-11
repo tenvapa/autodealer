@@ -8,6 +8,9 @@ import inc.tenk.cardealer.exceptions.EntityNotFoundException;
 import inc.tenk.cardealer.utils.HTMLEncoder;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -33,7 +36,7 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public boolean edit(Long id, PublishCarDTO carDTO) {
-        if(this.carRepository.getOne(id)==null) {
+        if(this.carRepository.findOne(id)==null) {
             throw new EntityNotFoundException();
         }
         this.carRepository.updateById(id,carDTO.getMake(),carDTO.getModel(),
@@ -68,7 +71,14 @@ public class CarServiceImpl implements CarService{
         if (this.carRepository.findOne(id)==null) {
             return null;
         }
-        return this.mapper.map(this.carRepository.getOne(id),PublishCarDTO.class);
+        return this.mapper.map(this.carRepository.findOne(id),PublishCarDTO.class);
+    }
+
+    @Override
+    public Page<CarDTO> listAllByPage(Pageable pageable) {
+        Page<Car> cars = this.carRepository.findAll(pageable);
+        Page<CarDTO> carDTOS = cars.map(car -> mapper.map(car, CarDTO.class));
+        return carDTOS;
     }
 
 }

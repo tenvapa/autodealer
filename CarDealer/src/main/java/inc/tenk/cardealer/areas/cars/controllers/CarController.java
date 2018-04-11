@@ -8,6 +8,8 @@ import inc.tenk.cardealer.exceptions.EntityNotFoundException;
 import inc.tenk.cardealer.exceptions.PageNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +22,7 @@ import javax.validation.Valid;
 
 @Controller
 @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')")
-@RequestMapping("/car")
+@RequestMapping("/cars")
 public class CarController extends BaseController{
     private CarServiceImpl carService;
 
@@ -29,6 +31,10 @@ public class CarController extends BaseController{
         this.carService = carService;
     }
 
+    @GetMapping("")
+    private ModelAndView cars(Model model, @PageableDefault(size = 10) Pageable pageable) {
+        return this.view("cars/cars");
+    }
     @GetMapping("/publish")
     public String publishCar() {
         return "redirect:/publish";
