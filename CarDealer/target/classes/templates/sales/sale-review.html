@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../bootstrap.min.css"/>
+    <title>Review Sale</title>
+</head>
+<body>
+<form class="container-fluid" style="width: 40%;float:left;" th:action="@{/sales/review}" th:method="POST" th:object="${saleReview}">
+    <div class="form-group">
+    <label th:for="customer">Customer: </label> <input class="form-control" name="customer" th:value="*{customer.name}" th:id="customer" type="text" readonly="readonly"/><br/>
+    </div>
+    <div class="form-group">
+    <label th:for="car">Car: </label> <input class="form-control" name="car" th:id="car" th:value="|*{car.make} *{car.model}|" type="text" readonly="readonly"/><br/>
+    </div>
+    <div class="form-group">
+    <label th:for="discount">Discount: </label> <input class="form-control" th:field="*{discount}" th:value="*{discount}" th:id="discount" type="text" readonly="readonly"/><br/>
+    </div>
+    <div class="form-group">
+    <label th:for="carPrice">Car Price: </label> <input class="form-control" th:field="*{carPrice}" th:value="*{carPrice}" th:id="carPrice" type="text" readonly="readonly"/><br/>
+    </div>
+    <div class="form-group">
+    <label th:for="finalCarPrice">Final Car Price: </label> <input class="form-control" th:field="*{finalCarPrice}" th:value="*{finalCarPrice}" th:id="finalCarPrice" th:type="text" readonly="readonly"/><br/>
+    </div>
+    <a class="btn" th:href="@{/sales/add}">Cancel</a> <button class="btn btn-primary" th:type="submit">Finalize</button>
+</form>
+</body>
+</html>

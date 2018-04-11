@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/styles/navbar.css"/>
+    <link rel="stylesheet" href="/styles/app.css"/>
+    <link rel="stylesheet" href="/styles/footer.css"/>
+    <title>All Sales</title>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+<div class="app-container">
+    <div class="text-center mb-3 app-container-header">
+        <h1>Sales</h1>
+    </div>
+    <div style="background: #f7f7f7;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    padding-bottom: 10px;">
+
+<table class="table borderless" style="border-top: hidden;">
+    <tr>
+        <th>Car Make</th>
+        <th>Car Model</th>
+        <th>Car Travelled Distance</th>
+        <th>Customer Name</th>
+        <th>Sale Amount</th>
+        <th>Sale Discount</th>
+    </tr>
+    <th:block th:each="sale : ${sales}" th:object="${sale}">
+
+            <tr>
+                <td><p th:text="*{carMake}"></p></td>
+                <td><p th:text="*{carModel}"></p></td>
+                <td><p th:text="*{carTravelledDistance}"></p></td>
+                <td><p th:text="*{customerName}"></p></td>
+                <td><p th:text="*{saleAmount}"></p></td>
+                <td><p th:text="|*{discount} %|"></p></td>
+            </tr>
+    </th:block>
+</table>
+    </div>
+</div>
+<div th:include="fragments/footer :: footer"></div>
+
+</body>
+</html>

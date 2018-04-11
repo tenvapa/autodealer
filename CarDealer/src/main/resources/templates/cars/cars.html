@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Cars</title>
+</head>
+<body>
+<a th:href="@{/}">Index</a><br/>
+<a th:href="@{/cars/add}">Add Car</a>
+<table border="1" style="border: black">
+    <tr>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Travelled Distance</th>
+        <th>Parts</th>
+    </tr>
+    <th:block th:each="car : ${cars}" th:object="${car}">
+        <tr>
+            <td><p th:text="*{make}"></p></td>
+            <td><p th:text="*{model}"></p></td>
+            <td><p th:text="*{year}"></p></td>
+            <td><a th:href="@{/cars/{id}/parts(id=*{id})}" th:text="Parts"></a></td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

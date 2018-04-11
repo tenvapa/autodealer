@@ -1,0 +1,72 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="bootstrap.min.css"/>
+    <link rel="stylesheet" href="/styles/navbar.css"/>
+    <title>Register</title>
+</head>
+<body>
+<th:block th:fragment="header">
+    <th:block sec:authorize="isAnonymous()">
+        <div class="header">
+        <div class="container">
+            <ul class="nav">
+                <li><a href="/" class="navbar-text">AUTOPARTS.BG</a></li>
+                <li class="nav-list-element nav-page"><a href ="/register">Register</a></li>
+                <li class="nav-list-element nav-page"><a href ="/login">Login</a></li>
+                <!--<li class="nav-list-element nav-search-position">-->
+                    <!--<div style="display: inline-block">-->
+                    <!--<input class="nav-search" type="search" name="search" placeholder="Search offers for parts and cars"/>-->
+                    <!--<a class="nav-search-icon" href=""><img src="images/search.jpg" width="20" height="20"/></a>-->
+                    <!--</div>-->
+                <!--</li>-->
+            </ul>
+        </div>
+        </div>
+        </th:block>
+            <th:block sec:authorize="hasRole('USER')">
+                <div class="header">
+                    <div class="container">
+                        <ul class="nav">
+                            <li><a href="/" class="navbar-text">AUTOPARTS.BG</a></li>
+                            <li class="nav-list-element nav-page"><a href ="/cart"><img src="/images/cart.png" width="20" height="20"/> <small>0.00lv</small></a></li>
+                            <li class="nav-list-element nav-page"><a href ="/sales">Sales</a></li>
+                            <li class="nav-list-element nav-page"><a href ="/edit/profile">Edit Profile</a></li>
+                            <li class="nav-list-element nav-page"><a href ="/logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </th:block>
+            <th:block sec:authorize="hasRole('MODERATOR')">
+                <div class="header">
+                    <div class="container">
+                        <ul class="nav">
+                            <li><a href="/" class="navbar-text">AUTOPARTS.BG</a></li>
+                            <li class="nav-list-element nav-page"><a href ="/sales">Sales</a></li>
+                            <li class="nav-list-element nav-page"><a href ="/publish">Publish</a></li>
+                            <li class="nav-list-element nav-page"><a href ="/edit/profile">Edit Profile</a></li>
+                            <li class="nav-list-element nav-page"><a href ="/logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </th:block>
+       <th:block sec:authorize="hasAnyRole('SUPER_ADMIN','ADMIN')">
+            <div class="header">
+            <div class="container">
+                <ul class="nav">
+                    <li><a href="/" class="navbar-text">AUTOPARTS.BG</a></li>
+                   <li class="nav-list-element nav-page"><a href ="/users">Users</a></li>
+                   <li class="nav-list-element nav-page"><a href ="/sales">Sales</a></li>
+                   <li class="nav-list-element nav-page"><a href ="/publish">Publish</a></li>
+                    <li class="nav-list-element nav-page"><a href ="/edit/profile">Edit Profile</a></li>
+                    <li class="nav-list-element nav-page"><a href ="/logout">Logout</a></li>
+                </ul>
+            </div>
+            </div>
+        </th:block>
+</th:block>
+</body>
+</html>

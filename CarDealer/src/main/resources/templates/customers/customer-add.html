@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../bootstrap.min.css"/>
+    <title>Add Customer</title>
+</head>
+<body>
+    <th:block th:if="${error!=null}">
+        <p style="color: red" th:text="${error}"></p>
+    </th:block>
+    <form class="container-fluid" style="width: 40%;float:left;" th:action="@{/customers/add}" th:method="POST">
+        <div class="form-group">
+        <label th:for="name">Name: </label> <input class="form-control" name="name" th:value="${name}" th:id="name" th:type="text"/><br/>
+        </div>
+        <div class="form-group">
+        <label th:for="birthdate">BirthDate: </label> <input class="form-control" name="birthDate" th:value="${birthDate}" th:id="birthdate" th:type="date"/><br/>
+        </div>
+        <button class="btn btn-primary" th:type="submit">Add</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/styles/navbar.css"/>
+    <link rel="stylesheet" href="/styles/app.css"/>
+    <link rel="stylesheet" href="/styles/footer.css"/>
+    <title>Profile</title>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+<div class="app-container" th:object="${user}">
+    <div class="text-center mb-3 app-container-header">
+        <h1 th:text="|Welcome, *{username}|"></h1>
+    </div>
+    <th:block th:if="${success!=null}">
+        <div class="alert alert-success text-center" style="vertical-align: middle">
+            <h3 th:text="${success}"></h3>
+        </div>
+    </th:block>
+    <div style="background: #f7f7f7;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    padding-bottom: 10px;">
+        <div class="col-sm text-center form-title">
+            <h3><label class="text-center">Edit Profile</label></h3>
+        </div>
+        <form class="container-fluid" th:action="@{/edit/profile}" th:method="POST">
+            <input type="hidden" th:field="*{username}"/>
+            <div style="display: inline-block; width: 100%">
+            <div class="form-container">
+                <div class="form-group" th:classappend="${incorrect_password!=null}? 'has-danger'">
+                    <label for="current_password">Current Password: </label>
+                    <input class="form-control" th:field="*{currentPassword}" th:value="*{currentPassword}" id="current_password" type="password"/><br/>
+                    <th:block th:if="${incorrect_password!=null}">
+                        <p style="color: #d9534f" th:text="${incorrect_password}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('password') and success==null}? 'has-danger'">
+                    <label for="password">Password: </label>
+                    <input class="form-control" th:field="*{password}" th:value="*{password}" id="password" type="password"/><br/>
+                    <th:block th:if="${#fields.hasErrors('password') and success==null}" th:each="error : ${#fields.errors('password')}">
+                        <p style="color: #d9534f" th:text="${error}"></p>
+                    </th:block>
+                    <th:block th:if="${password_mismatch!=null}">
+                        <p style="color: #d9534f" th:text="${password_mismatch}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('confirmPassword') and success==null}? 'has-danger'">
+                    <label for="confirm">Confirm Password: </label>
+                    <input class="form-control" th:field="*{confirmPassword}" th:value="*{confirmPassword}" id="confirm" type="password"/><br/>
+                    <th:block th:if="${#fields.hasErrors('confirmPassword') and success==null}" th:each="error : ${#fields.errors('confirmPassword')}">
+                        <p style="color: #d9534f" th:text="${error}"></p>
+                    </th:block>
+                    <th:block th:if="${password_mismatch!=null}">
+                        <p style="color: #d9534f" th:text="${password_mismatch}"></p>
+                    </th:block>
+                </div>
+            </div>
+            <div class="form-container" style="margin-left: 10%">
+                <div class="form-group" th:classappend="${#fields.hasErrors('firstName')}? 'has-danger'">
+                    <label for="firstName">First Name: </label>
+                    <input class="form-control" th:field="*{firstName}" th:value="*{firstName}" id="firstName" type="text"/><br/>
+                    <th:block th:if="${#fields.hasErrors('firstName')}" th:each="e : ${#fields.errors('firstName')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('lastName')}? 'has-danger'">
+                    <label for="lastName">Last Name: </label>
+                    <input class="form-control" th:field="*{lastName}" th:value="*{lastName}" id="lastName" type="text"/><br/>
+                    <th:block th:if="${#fields.hasErrors('lastName')}" th:each="e : ${#fields.errors('lastName')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('phoneNumber')}? 'has-danger'">
+                    <label for="phoneNumber">Mobile Phone: </label>
+                    <input class="form-control" th:field="*{phoneNumber}" th:value="*{phoneNumber}" id="phoneNumber" type="text"/><br/>
+                    <th:block th:if="${#fields.hasErrors('phoneNumber')}" th:each="e : ${#fields.errors('phoneNumber')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('address')}? 'has-danger'">
+                    <label for="address">Address: </label>
+                    <input class="form-control" th:field="*{address}" th:value="*{address}" id="address" type="text"/><br/>
+                    <th:block th:if="${#fields.hasErrors('address')}" th:each="e : ${#fields.errors('address')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('postCode')}? 'has-danger'">
+                    <label for="postCode">Postcode: </label>
+                    <input class="form-control" th:field="*{postCode}" th:value="*{postCode}" id="postCode" type="text"/><br/>
+                    <th:block th:if="${#fields.hasErrors('postCode')}" th:each="e : ${#fields.errors('postCode')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+            </div>
+            </div>
+                <hr/>
+                <div class="text-center" style="margin-bottom: 10px;">
+                    <button class="btn btn-form" th:type="submit">Edit</button><br/>
+                    <small class="text-center">If you want to edit any data you have to enter your current password!</small>
+                </div>
+        </form>
+    </div>
+    </div>
+
+<div th:include="fragments/footer :: footer"></div>
+</body>
+</html>

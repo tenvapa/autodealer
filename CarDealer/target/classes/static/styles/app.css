@@ -1,0 +1,102 @@
+.app-container-painted{
+    background:#f7f7f7;
+    display: inline-block;
+    margin-left: 15%;
+    width: 70%;
+    margin-top:35px;
+    margin-bottom: 35px;
+    border-radius: 15px;
+}
+.app-container {
+    display: inline-block;
+    margin-left: 15%;
+    width: 70%;
+    margin-top:35px;
+    margin-bottom: 35px;
+    border-radius: 15px;
+}
+.app-container-header {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: inline-block;
+    background:#f7f7f7;
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    width: 100%;
+}
+.app-container-section {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: inline-block;
+    background:#f7f7f7;
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    width: 45%;
+}
+#car-form {
+    display: inline-block;
+    background:#f7f7f7;
+    margin-right: 5%;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    width: 20%;
+    float: left;
+}
+#search-section {
+    display: inline-block;
+    background:#f7f7f7;
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    width: 75%;
+    float:right;
+}
+
+#product-section {
+    display: inline-block;
+    background:#f7f7f7;
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    width: 75%;
+    margin-top: 35px;
+    float:right;
+}
+
+input.search {
+    width: 90%;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.form-title {
+    padding-top: 10px;
+    background: #3331;
+    margin-bottom: 20px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+.car-form-input {
+    margin-bottom: 20px;
+}
+.form-container {
+    width: 45%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    float:left;
+}
+form button.btn-form{
+    color: #f7f7f7;
+    background: #245269;
+    text-transform: capitalize;
+    letter-spacing: 1.0px;
+}
+
+form button.btn-form:hover {
+    color: #245269;
+    background: #f7f7f7;
+    text-transform: capitalize;
+}
+
+input[type=search] {
+    font-family: Arial;
+    border-radius: 5px;
+    padding-left: 10px;
+}

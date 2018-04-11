@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/styles/navbar.css"/>
+    <link rel="stylesheet" href="/styles/app.css"/>
+    <link rel="stylesheet" href="/styles/footer.css"/>
+    <title>Edit Car</title>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+<div class="app-container">
+    <div style="background: #f7f7f7;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    padding-bottom: 10px;
+width: 100%;
+display: inline-block;">
+        <div class="col-sm text-center form-title">
+            <h2><label class="text-center">Edit Car</label></h2>
+        </div>
+        <form class="container-fluid" style="width: 100%;float:left;" th:action="@{/car/edit/{id}(id=${id})}" th:method="POST" th:object="${car}">
+            <div class="text-center" style="display: inline-block;width: 50%;margin-left:25%;margin-top: 15px;">
+                <div class="form-group" th:classappend="${#fields.hasErrors('make')}? 'has-danger'">
+                    <label th:for="make">Make: </label>
+                    <input class="form-control" th:field="*{make}" th:value="*{make}" th:id="make" th:type="text"/><br/>
+                    <th:block th:if="${#fields.hasErrors('make')}" th:each="e:${#fields.errors('make')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('model')}? 'has-danger'">
+                    <label th:for="model">Model: </label>
+                    <input class="form-control" th:field="*{model}" th:value="*{model}" th:id="model" th:type="text"/><br/>
+                    <th:block th:if="${#fields.hasErrors('model')}" th:each="e:${#fields.errors('model')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('year')}? 'has-danger'">
+                    <label th:for="year">Year: </label> <input class="form-control" th:field="*{year}" th:value="*{year}" th:id="year" type="number"/><br/>
+                    <th:block th:if="${#fields.hasErrors('year')}" th:each="e:${#fields.errors('year')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('price')}? 'has-danger'">
+                    <label th:for="price">Edit Price: </label>
+                    <input class="form-control" th:field="*{price}" th:value="*{price}" th:id="price" th:type="text"/><br/>
+                    <th:block th:if="${#fields.hasErrors('price')}" th:each="e:${#fields.errors('price')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+
+                <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'has-danger'">
+                    <label for="description">Description</label><br/>
+                    <textarea class="form-control" rows="5" th:field="*{description}" id="description"></textarea>
+                    <small>You can use only 255 characters</small>
+                    <th:block th:if="${#fields.hasErrors('description')}" th:each="e:${#fields.errors('description')}">
+                        <p style="color: #d9534f" th:text="${e}"></p>
+                    </th:block>
+                </div>
+            </div>
+            <hr/>
+            <div class="text-center" style="margin-bottom: 15px;">
+                <button class="btn btn-form" th:type="submit">Edit</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+<div th:include="fragments/footer :: footer"></div>
+</body>
+</html>

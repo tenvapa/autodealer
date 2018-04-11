@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/styles/navbar.css"/>
+    <link rel="stylesheet" href="/styles/app.css"/>
+    <link rel="stylesheet" href="/styles/footer.css"/>
+    <title>Edit Part</title>
+</head>
+<body>
+<div th:include="fragments/header :: header"></div>
+<div class="app-container">
+    <div style="background: #f7f7f7;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    padding-bottom: 10px;
+width: 100%;
+display: inline-block;">
+        <div class="col-sm text-center form-title">
+            <h2><label class="text-center">Edit Part</label></h2>
+        </div>
+<form class="container-fluid" style="width: 100%;float:left;" th:action="@{/part/edit/{id}(id=${id})}" th:method="POST" th:object="${part}">
+    <div class="text-center" style="display: inline-block;width: 50%;margin-left:25%;margin-top: 15px;">
+    <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'has-danger'">
+        <label th:for="name">Name: </label>
+        <textarea class="form-control" th:field="*{description}" th:value="*{description}" th:id="name" type="text" rows="5"></textarea><br/>
+        <th:block th:if="${#fields.hasErrors('description')}" th:each="e:${#fields.errors('description')}">
+            <p style="color: #d9534f" th:text="${e}"></p>
+        </th:block>
+    </div>
+    <div class="form-group" th:classappend="${#fields.hasErrors('price')}? 'has-danger'">
+    <label th:for="price">Edit Price: </label>
+        <input class="form-control" th:field="*{price}" th:value="*{price}" th:id="price" th:type="text"/><br/>
+        <th:block th:if="${#fields.hasErrors('price')}" th:each="e:${#fields.errors('price')}">
+            <p style="color: #d9534f" th:text="${e}"></p>
+        </th:block>
+    </div>
+    <div class="form-group" th:classappend="${#fields.hasErrors('quantity')}? 'has-danger'">
+    <label th:for="quantity">Quantity: </label> <input class="form-control" th:field="*{quantity}" th:value="*{quantity}" th:id="quantity" type="number"/><br/>
+        <th:block th:if="${#fields.hasErrors('quantity')}" th:each="e:${#fields.errors('quantity')}">
+            <p style="color: #d9534f" th:text="${e}"></p>
+        </th:block>
+    </div>
+    </div>
+    <hr/>
+    <div class="text-center" style="margin-bottom: 15px;">
+        <button class="btn btn-form" th:type="submit">Edit</button>
+    </div>
+
+</form>
+    </div>
+</div>
+<div th:include="fragments/footer :: footer"></div>
+</body>
+</html>

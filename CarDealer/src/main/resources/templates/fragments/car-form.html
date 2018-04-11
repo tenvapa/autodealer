@@ -1,0 +1,36 @@
+<div id="car-form" th:fragment="car-form">
+    <form class="container-fluid" th:action="@{#}" th:method="GET" th:object="${cars}">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm text-center form-title">
+                    <h5><label for="car" class="text-center">Search By Car </label></h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm text-center car-form-input">
+                    <select class="form-control" id="car" name="carMake">
+                        <option th:selected="selected" th:disabled="disabled">Make</option>
+                        <th:block th:each="car : ${cars}" th:object="${car}">
+                            <option th:value="|*{make}|" th:text="|*{make}|"></option>
+                        </th:block>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm text-center car-form-input">
+                    <select class="form-control" name="carModel">
+                        <option th:selected="selected" th:disabled="disabled">Model</option>
+                        <th:block th:each="car : ${cars}" th:object="${car}">
+                            <option th:value="|*{model}|" th:text="|*{model}|"></option>
+                        </th:block>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm text-center">
+                    <button class="btn btn-form" th:type="submit">Search</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

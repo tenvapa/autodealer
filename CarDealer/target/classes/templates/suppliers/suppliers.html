@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Suppliers</title>
+</head>
+<body>
+<table border="1" style="border: black">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Parts to supply</th>
+    </tr>
+
+    <th:block th:each="supplier : ${suppliers}" th:object="${supplier}">
+        <tr>
+            <td><p th:text="*{id}"></p></td>
+            <td><p th:text="*{name}"></p></td>
+            <td><p th:text="*{parts.size()}"></p></td>
+        </tr>
+    </th:block>
+
+</table>
+</body>
+</html>
