@@ -1,12 +1,11 @@
-package inc.tenk.cardealer.areas.cars.controllers;
+package inc.tenk.cardealer.areas.parts.controllers;
 
 import inc.tenk.cardealer.areas.cars.models.PublishCarDTO;
 import inc.tenk.cardealer.areas.parts.models.PublishPartDTO;
-import inc.tenk.cardealer.areas.cars.services.CarServiceImpl;
 import inc.tenk.cardealer.controllers.BaseController;
 import inc.tenk.cardealer.exceptions.EntityNotFoundException;
+import inc.tenk.cardealer.areas.parts.services.PartServiceImpl;
 import inc.tenk.cardealer.exceptions.PageNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,72 +15,82 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
 @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')")
-@RequestMapping("/cars")
-public class CarController extends BaseController{
-    private CarServiceImpl carService;
+@RequestMapping("/parts")
+public class PartController extends BaseController{
+    private PartServiceImpl partService;
+
 
     @Autowired
-    public CarController(CarServiceImpl carService) {
-        this.carService = carService;
+    public PartController(PartServiceImpl partService) {
+        this.partService = partService;
     }
 
-    @GetMapping("")
+    @GetMapping
     private ModelAndView cars(Model model, @PageableDefault(size = 10) Pageable pageable) {
-        return this.view("cars/cars");
+        return this.view("parts/parts");
     }
-    @GetMapping("/publish")
-    public String publishCar() {
-        return "redirect:/publish";
-    }
+
+//    @GetMapping("/all")
+//    public ModelAndView allParts(Model model) {
+//        model.addAttribute("parts", this.partService.all());
+//        return this.view("parts/parts");
+//    }
+//    @GetMapping("/publish")
+//    public String publishCar() {
+//        return "redirect:/publish";
+//    }
+
     @PostMapping("/publish")
-    public ModelAndView publishCar(@Valid @ModelAttribute("newCar") PublishCarDTO carDTO, BindingResult bindingResult, Model model){
+    public ModelAndView publishPart(@Valid @ModelAttribute("newPart") PublishPartDTO part,BindingResult bindingResult,
+                          Model model) {
         if(bindingResult.hasErrors()) {
-            model.addAttribute("newPart",new PublishPartDTO());
-            model.addAttribute("newCar",carDTO);
+            model.addAttribute("newPart",part);
+            model.addAttribute("newCar",new PublishCarDTO());
             return this.view("users/admin/publish");
         }
-        this.carService.publish(carDTO);
+        this.partService.publish(part);
         return this.redirect("/");
     }
+
     @GetMapping("/delete/{id}")
     public ModelAndView deletePartById(@PathVariable Long id) {
-        if(this.carService.get(id)==null) {
+        if(this.partService.get(id)==null) {
             throw new EntityNotFoundException();
         }
-        this.carService.delete(id);
+        this.partService.delete(id);
         return this.redirect("/");
     }
+
     @GetMapping("/edit/{id}")
-    public ModelAndView editPartById(@PathVariable Long id, Model model) {
-        if(this.carService.get(id)==null) {
+    public ModelAndView editPartById(@PathVariable Long id, Model model)  {
+        if(this.partService.get(id)==null) {
             throw new EntityNotFoundException();
         }
-        PublishCarDTO car = this.carService.get(id);
+        PublishPartDTO part = this.partService.get(id);
+
         model.addAttribute("id",id);
-        model.addAttribute("car",car);
-        return this.view("cars/car-edit");
+        model.addAttribute("part",part);
+        return this.view("parts/part-edit");
     }
     @PostMapping("/edit/{id}")
-    public ModelAndView editPartById(@PathVariable Long id,@Valid @ModelAttribute("car") PublishCarDTO car,BindingResult result) {
+    public ModelAndView editPartById(@PathVariable Long id,@Valid @ModelAttribute("part") PublishPartDTO part, BindingResult result) {
         if(result.hasErrors()) {
-            return this.view("cars/car-edit");
+            return this.view("parts/part-edit");
         }
-        this.carService.edit(id,car);
+        this.partService.edit(id,part);
         return this.redirect("/");
     }
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     @PreAuthorize(value = "permitAll()")
     public ModelAndView getCar(@PathVariable Long id) {
-        PublishCarDTO publishCarDTO = this.carService.get(id);
-        if(publishCarDTO==null) {
+        PublishPartDTO publishPartDTO = this.partService.get(id);
+        if(publishPartDTO==null) {
             throw new PageNotFoundException();
         }
-        return this.view("cars/publication");
+        return this.view("parts/publication");
     }
 }
