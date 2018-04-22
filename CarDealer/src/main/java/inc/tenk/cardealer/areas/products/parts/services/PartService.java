@@ -1,9 +1,9 @@
-package inc.tenk.cardealer.areas.parts.services;
+package inc.tenk.cardealer.areas.products.parts.services;
 
-import inc.tenk.cardealer.areas.cars.models.CarDTO;
-import inc.tenk.cardealer.areas.parts.models.PartDTO;
-import inc.tenk.cardealer.areas.parts.models.PublishPartDTO;
-import inc.tenk.cardealer.areas.parts.entities.Part;
+import inc.tenk.cardealer.areas.products.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.parts.entities.Part;
+import inc.tenk.cardealer.areas.products.parts.models.PartDTO;
+import inc.tenk.cardealer.areas.products.parts.models.PublishPartDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,6 +14,7 @@ public interface PartService {
     List<PartDTO> all();
     boolean delete(Long id);
     boolean edit(Long id, PublishPartDTO partEditDTO);
-    PublishPartDTO get(Long id);
+    PartDTO get(Long id);
+    void insert(Part part);
     Page<PartDTO> listAllByPage(Pageable pageable);
 }

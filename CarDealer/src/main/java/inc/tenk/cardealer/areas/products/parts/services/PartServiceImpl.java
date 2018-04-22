@@ -1,10 +1,10 @@
-package inc.tenk.cardealer.areas.parts.services;
+package inc.tenk.cardealer.areas.products.parts.services;
 
-import inc.tenk.cardealer.areas.parts.models.PartDTO;
-import inc.tenk.cardealer.areas.parts.models.PublishPartDTO;
-import inc.tenk.cardealer.areas.parts.entities.Part;
+import inc.tenk.cardealer.areas.products.parts.models.PartDTO;
+import inc.tenk.cardealer.areas.products.parts.models.PublishPartDTO;
+import inc.tenk.cardealer.areas.products.parts.entities.Part;
 
-import inc.tenk.cardealer.areas.parts.repositories.PartRepository;
+import inc.tenk.cardealer.areas.products.parts.repositories.PartRepository;
 import inc.tenk.cardealer.exceptions.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,11 +62,19 @@ public class PartServiceImpl implements PartService{
     }
 
     @Override
-    public PublishPartDTO get(Long id) {
+    public PartDTO get(Long id) {
         if(this.partRepository.findOne(id)==null) {
             return null;
         }
-        return this.mapper.map(this.partRepository.findOne(id),PublishPartDTO.class);
+        return this.mapper.map(this.partRepository.findOne(id),PartDTO.class);
+    }
+
+    @Override
+    public void insert(Part part) {
+        if(part==null) {
+            throw new NullPointerException();
+        }
+        this.partRepository.save(part);
     }
 
     @Override
