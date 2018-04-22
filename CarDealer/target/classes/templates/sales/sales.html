@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/bootstrap.min.css"/>
     <link rel="stylesheet" href="/styles/navbar.css"/>
     <link rel="stylesheet" href="/styles/app.css"/>
     <link rel="stylesheet" href="/styles/footer.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>All Sales</title>
 </head>
 <body>
@@ -19,28 +21,69 @@
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     padding-bottom: 10px;">
+        <th:block sec:authorize="hasRole('USER')">
+            <th:block th:if="${userSales.size()==0}">
+                <h4 class="text-center">The are no sales made!</h4>
+            </th:block>
+            <table th:if="${userSales.size()>0}" class="table borderless" style="border-top: hidden;">
+                <tr>
+                    <th>Product Type</th>
+                    <th>Product Name</th>
+                    <th>Product Price</th>
+                </tr>
+                <th:block th:each="sale : ${userSales}" th:object="${sale}">
+                    <th:block th:if="*{car!=null}">
+                        <tr>
+                            <td><p th:text="Car"></p></td>
+                            <td><p th:text="|*{car.getMake()} *{car.getModel()} *{car.getYear()}|"></p></td>
+                            <td><p th:text="*{car.getPrice()}"></p></td>
+                        </tr>
+                    </th:block>
+                    <th:block th:if="*{part!=null}">
+                        <tr>
+                            <td><p th:text="Part"></p></td>
+                            <td><p th:text="*{part.getDescription()}"></p></td>
+                            <td><p th:text="*{part.getPrice()}"></p></td>
+                        </tr>
+                    </th:block>
+                </th:block>
+            </table>
+        </th:block>
+        <th:block sec:authorize="hasAnyRole('MODERATOR','SUPER_ADMIN','ADMIN')">
+            <th:block th:if="${allSales.size()==0}">
+                <h4 class="text-center">The are no sales made!</h4>
+            </th:block>
+            <table th:if="${allSales.size()>0}" class="table borderless" style="border-top: hidden;">
+                <tr>
+                    <th>Product Type</th>
+                    <th>Product Name</th>
+                    <th>Product Price</th>
+                    <th>User</th>
+                    <th>View Product</th>
+                </tr>
+                <th:block th:each="sale : ${allSales}" th:object="${sale}">
+                    <th:block th:if="*{car!=null}">
+                       <tr>
+                            <td><p th:text="Car"></p></td>
+                            <td><p th:text="|*{car.getMake()} *{car.getModel()} *{car.getYear()}|"></p></td>
+                            <td><p th:text="*{car.getPrice()}"></p></td>
+                            <td><a th:text="*{user.getUsername()}"></a></td>
+                            <td><a th:href="@{cars/{id}(id=*{car.getId()})}" th:text="View"></a></td>
+                        </tr>
 
-<table class="table borderless" style="border-top: hidden;">
-    <tr>
-        <th>Car Make</th>
-        <th>Car Model</th>
-        <th>Car Travelled Distance</th>
-        <th>Customer Name</th>
-        <th>Sale Amount</th>
-        <th>Sale Discount</th>
-    </tr>
-    <th:block th:each="sale : ${sales}" th:object="${sale}">
-
-            <tr>
-                <td><p th:text="*{carMake}"></p></td>
-                <td><p th:text="*{carModel}"></p></td>
-                <td><p th:text="*{carTravelledDistance}"></p></td>
-                <td><p th:text="*{customerName}"></p></td>
-                <td><p th:text="*{saleAmount}"></p></td>
-                <td><p th:text="|*{discount} %|"></p></td>
-            </tr>
-    </th:block>
-</table>
+                        </th:block>
+                    <th:block th:if="*{part!=null}">
+                        <tr th:href="@{parts/{id}(id=*{part.getId()})}" class="inStock-items">
+                            <td><p th:text="Part"></p></td>
+                            <td><p th:text="*{part.getDescription()}"></p></td>
+                            <td><p th:text="*{part.getPrice()}"></p></td>
+                            <td><a th:text="*{user.getUsername()}"></a></td>
+                            <td><a th:href="@{parts/{id}(id=*{part.getId()})}" th:text="View"></a></td>
+                        </tr>
+                    </th:block>
+                </th:block>
+            </table>
+        </th:block>
     </div>
 </div>
 <div th:include="fragments/footer :: footer"></div>

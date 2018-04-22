@@ -27,8 +27,22 @@ public class User {
     private Role role;
     @OneToMany(mappedBy = "user")
     private Set<Sale> sales;
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 
     public User() {
+
+    }
+
+    public User(String firstName, String lastName, String username, String password,
+                String phoneNumber, String address, String postCode) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.postCode = postCode;
     }
 
     public Long getId() {
@@ -105,5 +119,13 @@ public class User {
 
     public void setSales(Set<Sale> sales) {
         this.sales = sales;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

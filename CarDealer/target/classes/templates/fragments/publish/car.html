@@ -17,7 +17,7 @@ float: right">
     <div class="col-sm text-center form-title">
         <h3><label class="text-center">Car</label></h3>
     </div>
-    <form th:method="POST" th:action="@{/car/publish}" th:object="${newCar}">
+    <form th:method="POST" th:action="@{/cars/publish}" th:object="${newCar}">
         <div class="text-center" style="display: inline-block;width: 100%">
             <div class="form-container" style="width: 95%;margin-left: 2.5%">
                 <div class="form-group" th:classappend="${#fields.hasErrors('make')}? 'has-danger'">

@@ -1,4 +1,4 @@
-package inc.tenk.cardealer.areas.cars.models;
+package inc.tenk.cardealer.areas.products.cars.models;
 
 import inc.tenk.cardealer.utils.HTMLEncoder;
 import org.hibernate.validator.constraints.Length;
@@ -23,6 +23,8 @@ public class PublishCarDTO {
     private BigDecimal price;
     @Length(max = 255, message = DESCRIPTION_MAX_LENGTH_ERROR)
     private String description;
+
+    private boolean inStock;
 
     public PublishCarDTO() {
     }
@@ -67,4 +69,11 @@ public class PublishCarDTO {
         this.description = HTMLEncoder.escapeHTML(description);
     }
 
+    public boolean isInStock() {
+        return inStock;
+    }
+
+    public void setInStock(boolean inStock) {
+        this.inStock = inStock;
+    }
 }

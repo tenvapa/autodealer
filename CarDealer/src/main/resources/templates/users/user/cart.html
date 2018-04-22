@@ -16,6 +16,72 @@
     <div class="text-center mb-3 app-container-header">
         <h1>Cart</h1>
     </div>
+    <div id="cart-section">
+        <div class="col-sm text-center form-title">
+            <h3><label class="text-center">Cars</label></h3>
+        </div>
+        <th:block th:if="${cars.size()==0}">
+            <h4 class="text-center">There are no cars in the cart!</h4>
+        </th:block>
+        <div class="row" style="margin-left: 2.5%;
+margin-right: 2.5%;">
+            <table style="width: 100%">
+            <th:block th:if="${cars.size()>0}" th:each="car : ${cars}" th:object="${car}">
+            <tr>
+                <div style="text-align:center;width: 99%;margin-left:0.5%;margin-right:0.5%;display: inline-block;margin-top:3.5%;margin-bottom: 5px;word-wrap: break-word;">
+                    <a th:href="@{/cars/{id}(id=*{id})}">
+                        <td><img style="float:left;border-radius: 5px;" src="/images/lights.jpg" width="40" height="40"/></td>
+                        <td><p th:text="|*{make} *{model} *{year}|" style="float:left;display:block;margin-bottom: 0px;color: #555555"></p></td>
+                        <td><p style="float:left;margin-bottom:3px;color: #555;" th:text="|Price: *{price}lv.|"></p></td>
+                    </a>
+                    <form method="post" th:action="@{/cart/remove/{id}(id = *{id})}">
+                        <input type="hidden" name="product" value="car"/>
+                    <td style="float: right;"><button style="color: #555;" onclick="return confirm('Are you sure you want to remove this from cart?')"
+                                type="submit" th:text="X"></button></td>
+                    </form>
+                </div>
+            </tr>
+            </th:block>
+            </table>
+                </div>
+
+        <br/>
+        <div class="col-sm text-center form-title" style="border-radius: 0px">
+            <h3><label class="text-center">Parts</label></h3>
+        </div>
+
+        <th:block th:if="${parts.size()==0}">
+            <h4 class="text-center">There are no parts in the cart!</h4>
+        </th:block>
+        <div class="row" style="margin-left: 2.5%;
+margin-right: 2.5%;">
+            <table style="width: 100%">
+            <th:block th:if="${parts.size()>0}" th:each="part : ${parts}" th:object="${part}">
+                <tr>
+                    <div style="text-align:center;width: 99%;margin-left:0.5%;margin-right:0.5%;display: inline-block;margin-top:3.5%;margin-bottom: 5px;word-wrap: break-word;">
+                    <a th:href="@{/parts/{id}(id=*{id})}">
+                        <td><img style="float:left;border-radius: 5px;" src="/images/lights.jpg" width="40" height="40"/></td>
+                        <td><p th:text="*{description}" style="float:left;display:block;margin-bottom: 0px;color: #555555"></p></td>
+                        <td><p style="float:left;margin-bottom:3px;color: #555;" th:text="|Price: *{price}lv.|"></p></td>
+                    </a>
+                    <form method="post" th:action="@{/cart/remove/{id}(id = *{id})}">
+                        <input type="hidden" name="product" value="part"/>
+                        <td style="float: right;"><button style="color: #555;" onclick="return confirm('Are you sure you want to remove this from cart?')"
+                                    type="submit" th:text="X"></button></td>
+                    </form>
+                </div>
+                </tr>
+            </th:block>
+            </table>
+        </div>
+        <div class="col-sm text-center form-title" style="margin-bottom:0px;border-radius: 0px">
+            <h3><label class="text-center" th:text="|Total amount: ${totalCartValue} lv.|"></label></h3>
+            <form method="post" th:action="@{/sales/add}">
+                <button style="color: #555;" onclick="return confirm('Are you sure you want to order the products in the cart?')"
+                                                  type="submit" th:text="Order"></button>
+            </form>
+        </div>
+    </div>
 </div>
 <div th:include="fragments/footer :: footer"></div>
 </body>

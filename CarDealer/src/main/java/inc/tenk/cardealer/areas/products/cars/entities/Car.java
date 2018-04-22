@@ -1,12 +1,15 @@
-package inc.tenk.cardealer.areas.cars.entities;
+package inc.tenk.cardealer.areas.products.cars.entities;
 
 import inc.tenk.cardealer.areas.sales.entities.Sale;
+import inc.tenk.cardealer.areas.users.entities.Cart;
 import inc.tenk.cardealer.utils.HTMLEncoder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "cars")
@@ -14,24 +17,33 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private BigDecimal price;
+    private Date publicationDate;
+    @ManyToMany(mappedBy = "cars",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Cart> carts;
+    @OneToMany(mappedBy = "car",fetch = FetchType.EAGER)
+    private Set<Sale> sales;
     private String make;
     private String model;
     private int year;
     private String description;
-    private BigDecimal price;
-    private Date publicationDate;
-    @OneToOne(mappedBy = "car")
-    private Sale sale;
-
-    protected Car() {
+    private boolean inStock;
+    public Car() {
+        this.carts = new HashSet<>();
+        this.sales = new HashSet<>();
+        this.inStock=true;
     }
-    public Car(String make, String model, int year, BigDecimal price, String description) {
+    public Car(String make, String model, int year,BigDecimal price, String description) {
+        this.carts = new HashSet<>();
+        this.sales = new HashSet<>();
         this.make = make;
         this.model = model;
         this.year = year;
-        this.setPrice(price);
+        this.price=price;
         this.setDescription(description);
         this.setPublicationDate(Calendar.getInstance().getTime());
+        this.inStock=true;
+
     }
 
     public Car(String make, String model, int year) {
@@ -42,6 +54,38 @@ public class Car {
 
     public Long getId() {
         return id;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Date getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(Date publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public Set<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(Set<Cart> carts) {
+        this.carts = carts;
+    }
+
+    public Set<Sale> getSales() {
+        return sales;
+    }
+
+    public void setSales(Set<Sale> sales) {
+        this.sales = sales;
     }
 
     public String getMake() {
@@ -77,29 +121,11 @@ public class Car {
         this.description = HTMLEncoder.escapeHTML(description);
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public boolean isInStock() {
+        return inStock;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setInStock(boolean inStock) {
+        this.inStock = inStock;
     }
-
-    public Date getPublicationDate() {
-        return publicationDate;
-    }
-
-    public void setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
-    }
-
-
-    public Sale getSale() {
-        return this.sale;
-    }
-
-    public void setSale(Sale sale) {
-        this.sale = sale;
-    }
-
 }

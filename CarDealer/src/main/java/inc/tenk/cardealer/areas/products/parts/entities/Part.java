@@ -1,5 +1,8 @@
-package inc.tenk.cardealer.areas.parts.entities;
+package inc.tenk.cardealer.areas.products.parts.entities;
 
+
+import inc.tenk.cardealer.areas.sales.entities.Sale;
+import inc.tenk.cardealer.areas.users.entities.Cart;
 import inc.tenk.cardealer.utils.HTMLEncoder;
 
 import javax.persistence.*;
@@ -15,13 +18,20 @@ public class Part {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String description;
     private BigDecimal price;
-    private int quantity;
     private Date publicationDate;
+    @ManyToMany(mappedBy = "parts",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Cart> carts;
+    @OneToMany(mappedBy = "part")
+    private Set<Sale> sales;
+    private String description;
+    private int quantity;
+    private boolean inStock;
 
     public Part() {
-
+        this.carts = new HashSet<>();
+        this.sales = new HashSet<>();
+        this.inStock = true;
     }
 
     public Part(String description, BigDecimal price, int quantity) {
@@ -29,15 +39,13 @@ public class Part {
         this.setPrice(price);
         this.setQuantity(quantity);
         this.setPublicationDate(Calendar.getInstance().getTime());
-
+        this.carts = new HashSet<>();
+        this.sales = new HashSet<>();
+        this.inStock=true;
     }
 
     public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        return id;
     }
 
     public String getDescription() {
@@ -48,20 +56,20 @@ public class Part {
         this.description = HTMLEncoder.escapeHTML(description);
     }
 
-    public BigDecimal getPrice() {
-        return this.price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public int getQuantity() {
         return this.quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Date getPublicationDate() {
@@ -72,5 +80,27 @@ public class Part {
         this.publicationDate = publicationDate;
     }
 
+    public Set<Cart> getCarts() {
+        return carts;
+    }
 
+    public void setCarts(Set<Cart> carts) {
+        this.carts = carts;
+    }
+
+    public Set<Sale> getSales() {
+        return sales;
+    }
+
+    public void setSales(Set<Sale> sales) {
+        this.sales = sales;
+    }
+
+    public boolean isInStock() {
+        return inStock;
+    }
+
+    public void setInStock(boolean inStock) {
+        this.inStock = inStock;
+    }
 }

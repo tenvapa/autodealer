@@ -8,7 +8,7 @@
     <title>Title</title>
 </head>
 <body>
-<th:block th:fragment="publish-part(newPart,partExist)">
+<th:block th:fragment="publish-part(newPart)">
 <div style="background: #f7f7f7;
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
@@ -17,7 +17,7 @@ width: 47.5%;display: inline-block">
     <div class="col-sm text-center form-title">
         <h3><label class="text-center">Part</label></h3>
     </div>
-    <form th:method="POST" th:action="@{/part/publish}" th:object="${newPart}">
+    <form th:method="POST" th:action="@{/parts/publish}" th:object="${newPart}">
         <div class="text-center" style="display: inline-block;width: 100%">
             <div class="form-container" style="width: 95%;margin-left: 2.5%">
                 <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'has-danger'">

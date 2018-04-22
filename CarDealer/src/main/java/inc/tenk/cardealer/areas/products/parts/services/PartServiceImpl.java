@@ -1,5 +1,7 @@
 package inc.tenk.cardealer.areas.products.parts.services;
 
+import inc.tenk.cardealer.areas.products.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.cars.models.CarDTO;
 import inc.tenk.cardealer.areas.products.parts.models.PartDTO;
 import inc.tenk.cardealer.areas.products.parts.models.PublishPartDTO;
 import inc.tenk.cardealer.areas.products.parts.entities.Part;
@@ -57,7 +59,11 @@ public class PartServiceImpl implements PartService{
         if(this.partRepository.findOne(id)==null) {
             throw new EntityNotFoundException();
         }
-        this.partRepository.update(id,partEditDTO.getDescription(),partEditDTO.getPrice(),partEditDTO.getQuantity());
+        if(partEditDTO.getQuantity()>0) {
+            partEditDTO.setInStock(true);
+        }
+        this.partRepository.update(id,partEditDTO.getDescription(),
+                partEditDTO.getPrice(),partEditDTO.getQuantity(),partEditDTO.isInStock());
         return false;
     }
 
@@ -79,7 +85,14 @@ public class PartServiceImpl implements PartService{
 
     @Override
     public Page<PartDTO> listAllByPage(Pageable pageable) {
-        Page<Part> parts = this.partRepository.findAll(pageable);
+        Page<Part> parts = this.partRepository.all(pageable);
+        Page<PartDTO> partDTOS = parts.map(part -> this.mapper.map(part, PartDTO.class));
+        return partDTOS;
+    }
+    @Override
+    public Page<PartDTO> search(Pageable pageable, String searchValue) {
+        searchValue = searchValue.toLowerCase();
+        Page<Part> parts = this.partRepository.foundParts(pageable,searchValue);
         Page<PartDTO> partDTOS = parts.map(part -> this.mapper.map(part, PartDTO.class));
         return partDTOS;
     }

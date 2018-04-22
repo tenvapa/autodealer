@@ -1,5 +1,6 @@
 package inc.tenk.cardealer.areas.users.repositories;
 
+import inc.tenk.cardealer.areas.users.entities.Cart;
 import inc.tenk.cardealer.areas.users.entities.Role;
 import inc.tenk.cardealer.areas.users.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findUserByUsername(String username);
     User findUserByUsernameAndPassword(String username,String password);
-    @Query("select u.password from User u where u.username=:username")
-    String getPasswordByUsername(@Param("username") String username);
-
+    @Query("update User u set u.cart=:cart where u.id=:id")
+    @Modifying
+    void updateUserCart(@Param("id") Long id,@Param("cart") Cart cart);
     @Query("update User u set u.address=:address,u.firstName=:firstName,u.lastName=:lastName," +
             "u.postCode=:postCode,u.password=:password,u.phoneNumber=:phoneNumber where u.username=:username")
     @Modifying

@@ -1,13 +1,13 @@
-package inc.tenk.cardealer.areas.cars.controllers;
+package inc.tenk.cardealer.areas.products.cars.controllers;
 
-import inc.tenk.cardealer.areas.cars.models.CarDTO;
-import inc.tenk.cardealer.areas.cars.models.PublishCarDTO;
-import inc.tenk.cardealer.areas.parts.models.PublishPartDTO;
-import inc.tenk.cardealer.areas.cars.services.CarServiceImpl;
+import inc.tenk.cardealer.areas.products.cars.models.CarDTO;
+import inc.tenk.cardealer.areas.products.cars.models.PublishCarDTO;
+import inc.tenk.cardealer.areas.products.parts.models.PartDTO;
+import inc.tenk.cardealer.areas.products.parts.models.PublishPartDTO;
+import inc.tenk.cardealer.areas.products.cars.services.CarServiceImpl;
 import inc.tenk.cardealer.controllers.BaseController;
 import inc.tenk.cardealer.exceptions.EntityNotFoundException;
 import inc.tenk.cardealer.exceptions.PageNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -63,7 +62,7 @@ public class CarController extends BaseController{
         if(this.carService.get(id)==null) {
             throw new EntityNotFoundException();
         }
-        PublishCarDTO car = this.carService.get(id);
+        CarDTO car = this.carService.get(id);
         model.addAttribute("id",id);
         model.addAttribute("car",car);
         return this.view("cars/car-edit");
@@ -79,7 +78,7 @@ public class CarController extends BaseController{
     @GetMapping("/{id}")
     @PreAuthorize(value = "permitAll()")
     public ModelAndView getCar(@PathVariable Long id, Model model) {
-        PublishCarDTO carDTO = this.carService.get(id);
+        CarDTO carDTO = this.carService.get(id);
         if(carDTO==null) {
             throw new PageNotFoundException();
         }

@@ -1,10 +1,15 @@
 package inc.tenk.cardealer.areas.users.services;
 
+import inc.tenk.cardealer.areas.products.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.cars.models.CarDTO;
+import inc.tenk.cardealer.areas.products.parts.entities.Part;
+import inc.tenk.cardealer.areas.products.parts.models.PartDTO;
+import inc.tenk.cardealer.areas.users.entities.Cart;
 import inc.tenk.cardealer.areas.users.models.UserDTO;
+import inc.tenk.cardealer.areas.users.repositories.CartRepository;
 import inc.tenk.cardealer.config.BeanConfig;
 import inc.tenk.cardealer.areas.users.models.UserEditDTO;
 import inc.tenk.cardealer.areas.users.entities.User;
-import inc.tenk.cardealer.areas.users.repositories.RoleRepository;
 import inc.tenk.cardealer.areas.users.repositories.UserRepository;
 import inc.tenk.cardealer.areas.users.models.UserRegisterDTO;
 import inc.tenk.cardealer.areas.users.entities.Role;
@@ -18,23 +23,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
+    private final CartService cartService;
     private ModelMapper mapper;
     private final BeanConfig passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BeanConfig passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, CartService cartService, BeanConfig passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+        this.roleService = roleService;
+        this.cartService = cartService;
         this.passwordEncoder = passwordEncoder;
         this.mapper = new ModelMapper();
     }
@@ -51,31 +57,80 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void updateRole(Long id, String roleName) {
-        Role role = this.roleRepository.findFirstByName(roleName);
+        Role role = this.roleService.get(roleName);
         this.userRepository.updateRole(id,role);
     }
 
     @Override
-    public void register(UserRegisterDTO userDto) {
-        User user = new User();
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setUsername(userDto.getUsername());
-        user.setPhoneNumber(userDto.getPhoneNumber());
-        user.setAddress(userDto.getAddress());
-        user.setPostCode(userDto.getPostCode());
-
-        Role role;
-        if(this.userRepository.findAll().size()==0) {
-            this.roleRepository.save(new Role("SUPER_ADMIN"));
-            this.roleRepository.save(new Role("ADMIN"));
-            this.roleRepository.save(new Role("MODERATOR"));
-            this.roleRepository.save(new Role("USER"));
-            role = this.roleRepository.findFirstByName("SUPER_ADMIN");
-        } else {
-            role = this.roleRepository.findFirstByName("USER");
+    public boolean addToCart(Long productId,String productType, String username) {
+        User user = this.userRepository.findByUsername(username);
+        if(productType.equals("part")) {
+            user.setCart(this.cartService.addPart(productId,user.getCart()));
         }
-        user.setPassword(userDto.getPassword());
+        if(productType.equals("car")) {
+            user.setCart(this.cartService.addCar(productId,user.getCart()));
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeFromCart(Long productId,String productType, String username) {
+        User user = this.userRepository.findByUsername(username);
+        if(productType.equals("part")) {
+            this.cartService.removePart(productId,user.getCart());
+        }
+        if(productType.equals("car")) {
+            this.cartService.removeCar(productId,user.getCart());
+        }
+        return false;
+    }
+
+    @Override
+    public Set<PartDTO> partsInCart(String username) {
+        User user = this.userRepository.findUserByUsername(username);
+        Set<Part> parts = user.getCart().getParts();
+        Set<PartDTO> partDTOS = new LinkedHashSet<>();
+        parts.forEach(part -> partDTOS.add(this.mapper.map(part, PartDTO.class)));
+
+        return partDTOS;
+    }
+
+    @Override
+    public Set<CarDTO> carsInCart(String username) {
+        User user = this.userRepository.findUserByUsername(username);
+        Set<Car> cars = user.getCart().getCars();
+        Set<CarDTO> carDTOS = new LinkedHashSet<>();
+        cars.forEach(car -> carDTOS.add(this.mapper.map(car, CarDTO.class)));
+
+        return carDTOS;
+    }
+
+    @Override
+    public BigDecimal totalCartValue(String username) {
+        User user = this.userRepository.findUserByUsername(username);
+        return this.cartService.totalAmount(user.getCart());
+    }
+
+    @Override
+    public void register(UserRegisterDTO userDto) {
+        User user = new User(userDto.getFirstName(),userDto.getLastName(),
+                userDto.getUsername(),userDto.getPassword(),
+                userDto.getPhoneNumber(),userDto.getAddress(),userDto.getPostCode());
+        Role role;
+        Cart cart;
+        if(this.userRepository.findAll().size()==0) {
+            this.roleService.insert(new Role("SUPER_ADMIN"));
+            this.roleService.insert(new Role("ADMIN"));
+            this.roleService.insert(new Role("MODERATOR"));
+            this.roleService.insert(new Role("USER"));
+            role = this.roleService.get("SUPER_ADMIN");
+        } else {
+            role = this.roleService.get("USER");
+            cart = new Cart();
+            this.cartService.insert(cart);
+            user.setCart(cart);
+            cart.setUser(user);
+        }
         role.getUsers().add(user);
         user.setRole(role);
         this.userRepository.save(user);
@@ -98,8 +153,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserEditDTO get(String username) {
-        return this.mapper.map(this.userRepository.findUserByUsername(username),UserEditDTO.class);
+    public UserDTO get(String username) {
+        return this.mapper.map(this.userRepository.findUserByUsername(username),UserDTO.class);
     }
 
     @Override

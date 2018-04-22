@@ -1,4 +1,4 @@
-package inc.tenk.cardealer.areas.cars.models;
+package inc.tenk.cardealer.areas.products.cars.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -11,6 +11,7 @@ public class CarDTO {
     private String description;
     private BigDecimal price;
     private Date publicationDate;
+    private boolean inStock;
 
     public CarDTO() {
     }
@@ -69,5 +70,13 @@ public class CarDTO {
 
     public void setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
+    }
+
+    public boolean isInStock() {
+        return inStock;
+    }
+
+    public void setInStock(boolean inStock) {
+        this.inStock = inStock;
     }
 }

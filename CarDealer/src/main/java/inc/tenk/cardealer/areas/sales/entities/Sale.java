@@ -1,6 +1,7 @@
 package inc.tenk.cardealer.areas.sales.entities;
 
-import inc.tenk.cardealer.areas.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.parts.entities.Part;
 import inc.tenk.cardealer.areas.users.entities.User;
 
 import javax.persistence.*;
@@ -11,16 +12,30 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private double discount;
-    @OneToOne(targetEntity = Car.class)
+    @ManyToOne(targetEntity = Car.class)
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_sales_cars"))
     private Car car;
+    @ManyToOne(targetEntity = Part.class)
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_sales_parts"))
+    private Part part;
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "FK_sales_users"))
     private User user;
 
     public Sale() {
 
+    }
+
+    public Sale(Car car, User user) {
+        this.car = car;
+        this.part=null;
+        this.user = user;
+    }
+
+    public Sale(Part part, User user) {
+        this.part = part;
+        this.car=null;
+        this.user = user;
     }
 
     public Long getId() {
@@ -31,20 +46,20 @@ public class Sale {
         this.id = id;
     }
 
-    public double getDiscount() {
-        return this.discount;
-    }
-
-    public void setDiscount(double discount) {
-        this.discount = discount;
-    }
-
     public Car getCar() {
-        return this.car;
+        return car;
     }
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    public Part getPart() {
+        return part;
+    }
+
+    public void setPart(Part part) {
+        this.part = part;
     }
 
     public User getUser() {

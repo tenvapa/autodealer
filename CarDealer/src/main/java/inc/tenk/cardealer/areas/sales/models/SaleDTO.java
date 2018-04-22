@@ -1,70 +1,41 @@
 package inc.tenk.cardealer.areas.sales.models;
 
+import inc.tenk.cardealer.areas.products.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.cars.models.CarDTO;
+
+import inc.tenk.cardealer.areas.products.parts.models.PartDTO;
+import inc.tenk.cardealer.areas.users.entities.User;
+import inc.tenk.cardealer.areas.users.models.UserDTO;
+
 public class SaleDTO {
-    private String carMake;
-    private String carModel;
-    private long carTravelledDistance;
-    private String customerName;
-    private double saleAmount;
-    private int discount;
+   private PartDTO part;
+   private CarDTO car;
+   private UserDTO user;
 
     public SaleDTO() {
     }
 
-    public SaleDTO(String carMake, String carModel, long carTravelledDistance, String customerName, double saleAmount, double discount) {
-        this.carMake = carMake;
-        this.carModel = carModel;
-        this.carTravelledDistance = carTravelledDistance;
-        this.customerName = customerName;
-        this.saleAmount = saleAmount;
-        this.discount = (int) discount;
+    public PartDTO getPart() {
+        return part;
     }
 
-    public String getCarMake() {
-        return carMake;
+    public void setPart(PartDTO part) {
+        this.part = part;
     }
 
-    public void setCarMake(String carMake) {
-        this.carMake = carMake;
+    public CarDTO getCar() {
+        return car;
     }
 
-    public String getCarModel() {
-        return carModel;
+    public void setCar(CarDTO car) {
+        this.car = car;
     }
 
-    public void setCarModel(String carModel) {
-        this.carModel = carModel;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public long getCarTravelledDistance() {
-        return carTravelledDistance;
-    }
-
-    public void setCarTravelledDistance(long carTravelledDistance) {
-        this.carTravelledDistance = carTravelledDistance;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public double getSaleAmount() {
-        return saleAmount;
-    }
-
-    public void setSaleAmount(double saleAmount) {
-        this.saleAmount = saleAmount;
-    }
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }

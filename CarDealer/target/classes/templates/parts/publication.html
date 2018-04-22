@@ -11,8 +11,30 @@
 </head>
 <body>
 <div th:include="fragments/header :: header"></div>
-<div class="app-container">
-
+<div class="app-container-painted">
+    <div style="display:block;width:70%;margin-left:15%;" th:object="${part}">
+        <div class="text-center">
+            <h3 th:text="|*{description}|"></h3><br/>
+            <img src="/images/lights.jpg" width="70%"/><br/>
+            <p th:text="*{price}"></p>
+            <th:block sec:authorize="hasRole('USER')">
+            <form method="post" th:action="@{/cart/add/{id}(id=${id})}">
+                <input type="hidden" name="product" value="part" />
+                <button type="submit">Add in Cart</button>
+            </form>
+            </th:block>
+            <th:block sec:authorize="!hasRole('USER')">
+                <form method="get" th:action="@{/parts/edit/{id}(id = *{id})}">
+                    <button style="color: #555;" th:text="Edit"></button>
+                </form>
+                <form method="get" th:action="@{/parts/delete/{id}(id = *{id})}">
+                    <button style="color: #555;"
+                            onclick="return confirm('Are you sure you want to delete this record?')"
+                       th:text="Delete"></button>
+                </form>
+            </th:block>
+        </div>
+    </div>
 </div>
 <div th:include="fragments/footer :: footer"></div>
 </body>

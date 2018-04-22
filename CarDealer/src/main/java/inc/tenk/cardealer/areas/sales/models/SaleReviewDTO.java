@@ -1,6 +1,6 @@
 package inc.tenk.cardealer.areas.sales.models;
 
-import inc.tenk.cardealer.areas.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.cars.entities.Car;
 import inc.tenk.cardealer.areas.users.entities.User;
 
 public class SaleReviewDTO {

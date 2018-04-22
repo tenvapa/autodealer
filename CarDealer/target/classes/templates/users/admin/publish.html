@@ -15,7 +15,7 @@
     <div class="text-center mb-3 app-container-header">
         <h1>Publish</h1>
     </div>
-    <div th:replace="fragments/publish/part :: publish-part(${newPart},${partExist})"></div>
+    <div th:replace="fragments/publish/part :: publish-part(${newPart})"></div>
     <div th:replace="fragments/publish/car :: publish-car(${newCar})"></div>
 </div>
 <div th:include="fragments/footer :: footer"></div>

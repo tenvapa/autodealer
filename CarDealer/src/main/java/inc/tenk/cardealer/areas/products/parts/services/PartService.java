@@ -1,6 +1,7 @@
 package inc.tenk.cardealer.areas.products.parts.services;
 
 import inc.tenk.cardealer.areas.products.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.cars.models.CarDTO;
 import inc.tenk.cardealer.areas.products.parts.entities.Part;
 import inc.tenk.cardealer.areas.products.parts.models.PartDTO;
 import inc.tenk.cardealer.areas.products.parts.models.PublishPartDTO;
@@ -17,4 +18,5 @@ public interface PartService {
     PartDTO get(Long id);
     void insert(Part part);
     Page<PartDTO> listAllByPage(Pageable pageable);
+    Page<PartDTO> search(Pageable pageable, String searchValue);
 }

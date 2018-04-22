@@ -1,4 +1,4 @@
-package inc.tenk.cardealer.areas.parts.models;
+package inc.tenk.cardealer.areas.products.parts.models;
 
 import inc.tenk.cardealer.utils.HTMLEncoder;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -17,6 +17,7 @@ public class PublishPartDTO {
     @NotNull
     @Min(value = 1)
     private Integer quantity;
+    private boolean inStock;
 
     public PublishPartDTO() {
     }
@@ -43,5 +44,13 @@ public class PublishPartDTO {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public boolean isInStock() {
+        return inStock;
+    }
+
+    public void setInStock(boolean inStock) {
+        this.inStock = inStock;
     }
 }

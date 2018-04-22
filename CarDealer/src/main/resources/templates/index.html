@@ -13,31 +13,31 @@
 <body>
 <div th:include="fragments/header :: header"></div>
 <div class="app-container">
-    <div th:replace="fragments/car-form :: car-form"></div>
+    <!--<div th:replace="fragments/car-form :: car-form"></div>-->
     <div th:replace="fragments/search :: search"></div>
     <div id="product-section">
         <div class="col-sm text-center form-title">
             <h3><label class="text-center">Cars</label></h3>
         </div>
-        <th:block th:if="${cars.size()==0}">
+        <th:block th:if="${cars.getTotalElements()==0}">
             <h4 class="text-center">There are no available cars!</h4>
         </th:block>
-        <div class="row">
-        <th:block th:if="${cars.size()>0}" th:each="car : ${cars}" th:object="${car}">
-
+        <div class="row" style="margin-left: 0px;
+margin-right: 0px;">
+        <th:block th:if="${cars.getTotalElements()>0}" th:each="car : ${cars}" th:object="${car}">
 
             <div style="float: left;text-align:center;width: 24%;margin-left:0.5%;margin-right:0.5%;display: inline-block;margin-top:3.5%;margin-bottom: 5px;word-wrap: break-word;">
-                <a th:href="@{/car/{id}(id=*{id})}">
+                <a th:href="@{/cars/{id}(id=*{id})}">
                     <img style="border-radius: 5px;" src="/images/lights.jpg" width="140" height="140"/>
                     <small th:text="|*{make} *{model} *{year}|" style="display:block;margin-bottom: 0px;color: #555555"></small>
                     <p style="margin-bottom:3px;color: #555;" th:text="|Price: *{price}lv.|"></p>
                 </a>
                 <th:block sec:authorize="hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')">
                     <a style="color: #555;" onclick="return confirm('Are you sure you want to delete this record?')"
-                       th:href="@{/car/delete/{id}(id = *{id})}" th:text="Delete"></a>
+                       th:href="@{/cars/delete/{id}(id = *{id})}" th:text="Delete"></a>
                 </th:block>
                 <th:block sec:authorize="hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')">
-                    <a style="color: #555;" th:href="@{/car/edit/{id}(id = *{id})}" th:text="Edit"></a>
+                    <a style="color: #555;" th:href="@{/cars/edit/{id}(id = *{id})}" th:text="Edit"></a>
                 </th:block>
             </div>
 
@@ -48,23 +48,24 @@
             <h3><label class="text-center">Parts</label></h3>
         </div>
 
-        <th:block th:if="${parts.size()==0}">
+        <th:block th:if="${parts.getTotalElements()==0}">
             <h4 class="text-center">There are no parts available!</h4>
         </th:block>
-        <div class="row">
-        <th:block th:if="${parts.size()>0}" th:each="part : ${parts}" th:object="${part}">
+        <div class="row" style="margin-left: 0px;
+margin-right: 0px;">
+        <th:block th:if="${parts.getTotalElements()>0}" th:each="part : ${parts}" th:object="${part}">
                 <div style="text-align:center;width: 24%;margin-left:0.5%;margin-right:0.5%;float: left;display: inline-block;margin-top:3.5%;margin-bottom: 5px;word-wrap: break-word;">
-                    <a th:href="@{/part/{id}(id=*{id})}">
+                    <a th:href="@{/parts/{id}(id=*{id})}">
                         <img style="border-radius: 5px;" src="/images/lights.jpg" width="140" height="140"/>
                     <small th:text="*{description}" style="display:block;margin-bottom: 0px;color: #555555"></small>
                     <p style="margin-bottom:3px;color: #555;" th:text="|Price: *{price}lv.|"></p>
                     </a>
                     <th:block sec:authorize="hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')">
                     <a style="color: #555;" onclick="return confirm('Are you sure you want to delete this record?')"
-                       th:href="@{/part/delete/{id}(id = *{id})}" th:text="Delete"></a>
+                       th:href="@{/parts/delete/{id}(id = *{id})}" th:text="Delete"></a>
                     </th:block>
                     <th:block sec:authorize="hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')">
-                        <a style="color: #555;" th:href="@{/part/edit/{id}(id = *{id})}" th:text="Edit"></a>
+                        <a style="color: #555;" th:href="@{/parts/edit/{id}(id = *{id})}" th:text="Edit"></a>
                     </th:block>
                 </div>
         </th:block>

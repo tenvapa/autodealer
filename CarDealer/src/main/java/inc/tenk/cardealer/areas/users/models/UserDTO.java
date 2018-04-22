@@ -1,5 +1,6 @@
 package inc.tenk.cardealer.areas.users.models;
 
+import inc.tenk.cardealer.areas.users.entities.Cart;
 import inc.tenk.cardealer.areas.users.entities.Role;
 
 
@@ -14,6 +15,7 @@ public class UserDTO {
     private String address;
     private String postCode;
     private Role role;
+    private Cart cart;
 
     public UserDTO() {
     }
@@ -88,5 +90,13 @@ public class UserDTO {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

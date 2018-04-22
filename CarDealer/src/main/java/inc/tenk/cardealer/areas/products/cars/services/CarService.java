@@ -1,9 +1,9 @@
-package inc.tenk.cardealer.areas.cars.services;
+package inc.tenk.cardealer.areas.products.cars.services;
 
 
-import inc.tenk.cardealer.areas.cars.entities.Car;
-import inc.tenk.cardealer.areas.cars.models.CarDTO;
-import inc.tenk.cardealer.areas.cars.models.PublishCarDTO;
+import inc.tenk.cardealer.areas.products.cars.entities.Car;
+import inc.tenk.cardealer.areas.products.cars.models.CarDTO;
+import inc.tenk.cardealer.areas.products.cars.models.PublishCarDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +15,7 @@ public interface CarService {
     boolean delete(Long id);
     boolean publish(PublishCarDTO carDTO);
     PublishCarDTO get(String make, String model, int year);
-    PublishCarDTO get(Long id);
+    CarDTO get(Long id);
     Page<CarDTO> listAllByPage(Pageable pageable);
+    Page<CarDTO> search(Pageable pageable,String searchValue);
 }

@@ -1,16 +1,15 @@
 package inc.tenk.cardealer.areas.users.controllers;
 
-import inc.tenk.cardealer.areas.cars.models.PublishCarDTO;
-import inc.tenk.cardealer.areas.parts.models.PublishPartDTO;
+import inc.tenk.cardealer.areas.products.cars.models.PublishCarDTO;
+import inc.tenk.cardealer.areas.products.parts.models.PublishPartDTO;
+import inc.tenk.cardealer.areas.users.models.UserDTO;
 import inc.tenk.cardealer.areas.users.services.RoleServiceImpl;
 import inc.tenk.cardealer.areas.users.services.UserServiceImpl;
 import inc.tenk.cardealer.areas.users.models.UserEditDTO;
-import inc.tenk.cardealer.areas.users.models.UserListItemDTO;
 import inc.tenk.cardealer.areas.users.models.UserLoginDTO;
 import inc.tenk.cardealer.areas.users.models.UserRegisterDTO;
 import inc.tenk.cardealer.controllers.BaseController;
 import inc.tenk.cardealer.utils.HTMLEncoder;
-import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -68,7 +67,30 @@ public class UserController extends BaseController{
             return this.view("users/register");
         }
         this.userService.register(user);
-        return this.redirect("login");
+        return this.redirect("/login");
+    }
+    @PreAuthorize(value = "hasRole('USER')")
+    @GetMapping("/cart")
+    public ModelAndView cartProducts(Principal principal, Model model) {
+        //TODO: get all parts and all cars from the cart
+        String username = principal.getName();
+        model.addAttribute("cars", this.userService.carsInCart(username));
+        model.addAttribute("parts",this.userService.partsInCart(username));
+        model.addAttribute("totalCartValue",this.userService.totalCartValue(username));
+        return this.view("users/user/cart");
+    }
+    @PreAuthorize(value = "hasRole('USER')")
+    @PostMapping("/cart/add/{id}")
+    public ModelAndView cartProducts(@PathVariable Long id,@RequestParam("product") String productType,
+                                     Principal principal) {
+        this.userService.addToCart(id,productType,principal.getName());
+        return this.redirect("/cart");
+    }
+    @PreAuthorize(value = "hasRole('USER')")
+    @PostMapping("/cart/remove/{id}")
+    public ModelAndView cartRemove(@PathVariable Long id,@RequestParam("product") String productType, Principal principal) {
+        this.userService.removeFromCart(id,productType,principal.getName());
+        return this.redirect("/cart");
     }
     @GetMapping("/login")
     @PreAuthorize(value = "isAnonymous()")
@@ -95,11 +117,7 @@ public class UserController extends BaseController{
         }
         return this.redirect("/login");
     }
-    @PreAuthorize(value = "hasRole('USER')")
-    @GetMapping("/cart")
-    public ModelAndView cartProducts() {
-        return this.view("users/user/cart");
-    }
+
     @GetMapping("/publish")
     @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')")
     public ModelAndView addPart(Model model, HttpServletRequest request) {
@@ -107,7 +125,7 @@ public class UserController extends BaseController{
         model.addAttribute("newCar",new PublishCarDTO());
         return this.view("users/admin/publish");
     }
-    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize(value = "hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')")
     @GetMapping("/users")
     public ModelAndView users(Principal principal, Model model,HttpServletRequest request) {
         model.addAttribute("loggedInUser", this.userService.get(principal.getName()));
@@ -128,7 +146,7 @@ public class UserController extends BaseController{
     @GetMapping("/edit/profile")
     public ModelAndView getProfile(Model model, Principal principal) {
         String username = principal.getName();
-        UserEditDTO user = this.userService.get(username);
+        UserDTO user = this.userService.get(username);
         model.addAttribute("user",user);
 
         return this.view("users/profile");

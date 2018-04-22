@@ -12,8 +12,29 @@
 <body>
 <div th:include="fragments/header :: header"></div>
 <div class="app-container-painted">
+    <div style="display:block;width:70%;margin-left:15%;" th:object="${car}">
     <div class="text-center">
-
+        <h3 th:text="|*{make} *{model} *{year}|"></h3><br/>
+        <img src="/images/lights.jpg" width="70%"/><br/>
+        <p th:text="*{description}"></p><br/>
+        <p th:text="*{price}"></p>
+        <th:block sec:authorize="hasRole('USER')">
+            <form method="post" th:action="@{/cart/add/{id}(id=${id})}">
+                <input type="hidden" name="product" value="car" />
+                <button type="submit">Add in Cart</button>
+            </form>
+        </th:block>
+        <th:block sec:authorize="hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')">
+            <form method="get" th:action="@{/cars/edit/{id}(id = *{id})}">
+                <button style="color: #555;" th:text="Edit"></button>
+            </form>
+            <form method="get" th:action="@{/cars/delete/{id}(id = *{id})}">
+                <button style="color: #555;"
+                        onclick="return confirm('Are you sure you want to delete this record?')"
+                        th:text="Delete"></button>
+            </form>
+        </th:block>
+    </div>
     </div>
 </div>
 <div th:include="fragments/footer :: footer"></div>

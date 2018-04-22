@@ -1,10 +1,11 @@
-package inc.tenk.cardealer.areas.parts.controllers;
+package inc.tenk.cardealer.areas.products.parts.controllers;
 
-import inc.tenk.cardealer.areas.cars.models.PublishCarDTO;
-import inc.tenk.cardealer.areas.parts.models.PublishPartDTO;
+import inc.tenk.cardealer.areas.products.cars.models.PublishCarDTO;
+import inc.tenk.cardealer.areas.products.parts.models.PartDTO;
+import inc.tenk.cardealer.areas.products.parts.models.PublishPartDTO;
 import inc.tenk.cardealer.controllers.BaseController;
 import inc.tenk.cardealer.exceptions.EntityNotFoundException;
-import inc.tenk.cardealer.areas.parts.services.PartServiceImpl;
+import inc.tenk.cardealer.areas.products.parts.services.PartServiceImpl;
 import inc.tenk.cardealer.exceptions.PageNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -30,19 +31,9 @@ public class PartController extends BaseController{
     }
 
     @GetMapping
-    private ModelAndView cars(Model model, @PageableDefault(size = 10) Pageable pageable) {
+    private ModelAndView parts(Model model, @PageableDefault(size = 10) Pageable pageable) {
         return this.view("parts/parts");
     }
-
-//    @GetMapping("/all")
-//    public ModelAndView allParts(Model model) {
-//        model.addAttribute("parts", this.partService.all());
-//        return this.view("parts/parts");
-//    }
-//    @GetMapping("/publish")
-//    public String publishCar() {
-//        return "redirect:/publish";
-//    }
 
     @PostMapping("/publish")
     public ModelAndView publishPart(@Valid @ModelAttribute("newPart") PublishPartDTO part,BindingResult bindingResult,
@@ -70,7 +61,7 @@ public class PartController extends BaseController{
         if(this.partService.get(id)==null) {
             throw new EntityNotFoundException();
         }
-        PublishPartDTO part = this.partService.get(id);
+        PartDTO part = this.partService.get(id);
 
         model.addAttribute("id",id);
         model.addAttribute("part",part);
@@ -86,11 +77,13 @@ public class PartController extends BaseController{
     }
     @GetMapping(value = "/{id}")
     @PreAuthorize(value = "permitAll()")
-    public ModelAndView getCar(@PathVariable Long id) {
-        PublishPartDTO publishPartDTO = this.partService.get(id);
+    public ModelAndView getCar(@PathVariable Long id,Model model) {
+        PartDTO publishPartDTO = this.partService.get(id);
         if(publishPartDTO==null) {
             throw new PageNotFoundException();
         }
+        model.addAttribute("id",id);
+        model.addAttribute("part",publishPartDTO);
         return this.view("parts/publication");
     }
 }

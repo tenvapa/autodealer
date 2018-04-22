@@ -31,8 +31,8 @@
                 <div class="header">
                     <div class="container">
                         <ul class="nav">
-                            <li><a href="/" class="navbar-text">AUTOPARTS.BG</a></li>
-                            <li class="nav-list-element nav-page"><a href ="/cart"><img src="/images/cart.png" width="20" height="20"/> <small>0.00lv</small></a></li>
+                            <li><a href="/" class="navbar-text">AUTODEALER.BG</a></li>
+                            <li class="nav-list-element nav-page"><a href ="/cart"><img src="/images/cart.png" width="20" height="20"/>cart</a></li>
                             <li class="nav-list-element nav-page"><a href ="/sales">Sales</a></li>
                             <li class="nav-list-element nav-page"><a href ="/edit/profile">Edit Profile</a></li>
                             <li class="nav-list-element nav-page"><a href ="/logout">Logout</a></li>
@@ -40,24 +40,11 @@
                     </div>
                 </div>
             </th:block>
-            <th:block sec:authorize="hasRole('MODERATOR')">
-                <div class="header">
-                    <div class="container">
-                        <ul class="nav">
-                            <li><a href="/" class="navbar-text">AUTOPARTS.BG</a></li>
-                            <li class="nav-list-element nav-page"><a href ="/sales">Sales</a></li>
-                            <li class="nav-list-element nav-page"><a href ="/publish">Publish</a></li>
-                            <li class="nav-list-element nav-page"><a href ="/edit/profile">Edit Profile</a></li>
-                            <li class="nav-list-element nav-page"><a href ="/logout">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </th:block>
-       <th:block sec:authorize="hasAnyRole('SUPER_ADMIN','ADMIN')">
+       <th:block sec:authorize="hasAnyRole('SUPER_ADMIN','ADMIN','MODERATOR')">
             <div class="header">
             <div class="container">
                 <ul class="nav">
-                    <li><a href="/" class="navbar-text">AUTOPARTS.BG</a></li>
+                    <li><a href="/" class="navbar-text">AUTODEALER.BG</a></li>
                    <li class="nav-list-element nav-page"><a href ="/users">Users</a></li>
                    <li class="nav-list-element nav-page"><a href ="/sales">Sales</a></li>
                    <li class="nav-list-element nav-page"><a href ="/publish">Publish</a></li>

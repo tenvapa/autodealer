@@ -22,7 +22,7 @@ display: inline-block;">
         <div class="col-sm text-center form-title">
             <h2><label class="text-center">Edit Car</label></h2>
         </div>
-        <form class="container-fluid" style="width: 100%;float:left;" th:action="@{/car/edit/{id}(id=${id})}" th:method="POST" th:object="${car}">
+        <form class="container-fluid" style="width: 100%;float:left;" th:action="@{/cars/edit/{id}(id=${id})}" th:method="POST" th:object="${car}">
             <div class="text-center" style="display: inline-block;width: 50%;margin-left:25%;margin-top: 15px;">
                 <div class="form-group" th:classappend="${#fields.hasErrors('make')}? 'has-danger'">
                     <label th:for="make">Make: </label>
@@ -59,6 +59,10 @@ display: inline-block;">
                     <th:block th:if="${#fields.hasErrors('description')}" th:each="e:${#fields.errors('description')}">
                         <p style="color: #d9534f" th:text="${e}"></p>
                     </th:block>
+                </div>
+                <div class="form-group">
+                    <label th:for="inStock">In Stock: </label>
+                    <input class="form-control" th:field="*{inStock}" th:value="*{inStock}" th:id="quantity" type="checkbox"/><br/>
                 </div>
             </div>
             <hr/>

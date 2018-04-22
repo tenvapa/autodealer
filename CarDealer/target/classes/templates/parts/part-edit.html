@@ -22,7 +22,7 @@ display: inline-block;">
         <div class="col-sm text-center form-title">
             <h2><label class="text-center">Edit Part</label></h2>
         </div>
-<form class="container-fluid" style="width: 100%;float:left;" th:action="@{/part/edit/{id}(id=${id})}" th:method="POST" th:object="${part}">
+<form class="container-fluid" style="width: 100%;float:left;" th:action="@{/parts/edit/{id}(id=${id})}" th:method="POST" th:object="${part}">
     <div class="text-center" style="display: inline-block;width: 50%;margin-left:25%;margin-top: 15px;">
     <div class="form-group" th:classappend="${#fields.hasErrors('description')}? 'has-danger'">
         <label th:for="name">Name: </label>

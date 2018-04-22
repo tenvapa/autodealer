@@ -1,7 +1,8 @@
-package inc.tenk.cardealer.areas.cars.repositories;
+package inc.tenk.cardealer.areas.products.cars.repositories;
 
-import inc.tenk.cardealer.areas.cars.entities.Car;
-import org.springframework.data.jpa.repository.JpaRepository;
+import inc.tenk.cardealer.areas.products.cars.entities.Car;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -15,20 +16,22 @@ import java.util.List;
 @Repository
 @Transactional
 public interface CarRepository extends PagingAndSortingRepository<Car, Long> {
-    List<Car> findByMakeOrderByModelAscYearDesc(String make);
-
-    @Query("select c from Car c where c.id=:id")
-    List<Car> getAllCarsWithTheirParts(@Param("id") Long id);
 
     Car getCarByMakeAndModelAndYear(String make, String model, int year);
 
-    @Query("select c from Car c order by c.publicationDate desc")
+    @Query("select c from Car c where c.inStock=true order by c.publicationDate desc")
     List<Car> getAllSortedByPublicationDate();
 
+    @Query("select c from Car c where c.inStock=true order by c.publicationDate desc")
+    Page<Car> getAllSortedByPublicationDate(Pageable pageable);
+
     @Modifying
-    @Query("update Car c set c.make=:make, c.model=:model,c.year=:year,c.description=:description, c.price=:price where c.id=:id")
+    @Query("update Car c set c.make=:make, c.model=:model,c.year=:year,c.description=:description, c.price=:price, c.inStock=:inStock where c.id=:id")
     void updateById(@Param("id") Long id, @Param("make") String make, @Param("model") String model,
-                    @Param("year") Integer year, @Param("description") String description, @Param("price") BigDecimal price);
+                    @Param("year") Integer year, @Param("description") String description,
+                    @Param("price") BigDecimal price, @Param("inStock") boolean inStock);
 
 
+    @Query("select c from Car c where concat(c.make,' ',c.model,' ',c.year) like %:value% and c.inStock=true")
+    Page<Car> foundCars(Pageable pageable,@Param("value") String value);
 }
